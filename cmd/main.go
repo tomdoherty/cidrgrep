@@ -12,13 +12,13 @@ func main() {
 		log.Fatalf("%s <network/cidr> [files..]", os.Args[0])
 	}
 
-	// when parsing multiple files, prefix with the filename
 	var prefix string
 
 	// process files passed on the command line
 	if len(os.Args) > 2 {
 		for _, file := range os.Args[2:] {
 			if len(os.Args) > 3 {
+				// when parsing multiple files, prefix with the filename
 				prefix = file + ": "
 			}
 			f, err := os.Open(file)
