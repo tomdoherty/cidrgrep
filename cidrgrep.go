@@ -18,8 +18,8 @@ var IPAddressRegexp = regexp.MustCompile(`[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0
 // writer. All other input is ignored. The input reader is read to completion,
 // or the first read error. A prefix is prefixed to the output for when parsing
 // multiple files
-func Filter(input io.Reader, output io.Writer, cidr string, prefix string) {
-	scanner := bufio.NewScanner(input)
+func Filter(r io.Reader, w io.Writer, cidr string, prefix string) {
+	scanner := bufio.NewScanner(r)
 
 	// IP is not needed here, just the *IPNet
 	_, ipv4Net, err := net.ParseCIDR(cidr)
@@ -31,7 +31,7 @@ func Filter(input io.Reader, output io.Writer, cidr string, prefix string) {
 		line := scanner.Text()
 		for _, match := range IPAddressRegexp.FindAllString(line, -1) {
 			if ipv4Net.Contains(net.ParseIP(match)) {
-				fmt.Fprintf(output, "%s%s\n", prefix, line)
+				fmt.Fprintf(w, "%s%s\n", prefix, line)
 				break
 			}
 		}
