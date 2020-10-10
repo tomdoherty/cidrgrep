@@ -10,11 +10,11 @@ import (
 
 func TestFilter(t *testing.T) {
 	testCases := []struct {
-		input, cidr, want string
+		input, cidr, want, prefix string
 	}{
-		{input: "10.1.1.100\n", cidr: "10.1.1.1/24", want: "10.1.1.100"},
-		{input: "10.1.1.100\n127.0.0.1\n", cidr: "10.1.1.0/24", want: "10.1.1.100"},
-		{input: "no place like 127.0.0.1\n", cidr: "127.0.0.1/32", want: "no place like 127.0.0.1"},
+		{input: "10.1.1.100\n", cidr: "10.1.1.1/24", want: "10.1.1.100\n"},
+		{input: "10.1.1.100\n127.0.0.1\n", cidr: "10.1.1.0/24", want: "10.1.1.100\n"},
+		{input: "no place like 127.0.0.1\n", cidr: "127.0.0.1/32", want: "no place like 127.0.0.1\n"},
 
 		{input: "\n", cidr: "10.1.1.1/24", want: ""},
 		{input: "10.1.1.100\n", cidr: "10.1.2.0/24", want: ""},
@@ -28,7 +28,7 @@ func TestFilter(t *testing.T) {
 		input := strings.NewReader(tc.input)
 		want := tc.want
 
-		cidrgrep.Filter(input, &output, tc.cidr)
+		cidrgrep.Filter(input, &output, tc.cidr, "")
 
 		got := output.String()
 

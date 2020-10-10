@@ -10,7 +10,7 @@ import (
 )
 
 // Filter filters input for lines containing an IP within cidr
-func Filter(input io.Reader, output io.Writer, cidr string) {
+func Filter(input io.Reader, output io.Writer, cidr string, prefix string) {
 	scanner := bufio.NewScanner(input)
 
 	_, ipv4Net, err := net.ParseCIDR(cidr)
@@ -23,7 +23,7 @@ func Filter(input io.Reader, output io.Writer, cidr string) {
 		line := scanner.Text()
 		for _, match := range re.FindAllString(line, -1) {
 			if ipv4Net.Contains(net.ParseIP(match)) {
-				fmt.Fprintf(output, "%s", line)
+				fmt.Fprintf(output, "%s%s\n", prefix, line)
 				break
 			}
 		}
