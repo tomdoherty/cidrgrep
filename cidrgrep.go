@@ -18,11 +18,11 @@ var IPAddressRegexp = regexp.MustCompile(`[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0
 // writer. All other input is ignored. The input reader is read to completion,
 // or the first read error. A prefix is prefixed to the output for when parsing
 // multiple files
-func Filter(r io.Reader, w io.Writer, cidr string, prefix string) {
+func Filter(r io.Reader, w io.Writer, pattern string, prefix string) {
 	scanner := bufio.NewScanner(r)
 
 	// IP is not needed here, just the *IPNet
-	_, ipv4Net, err := net.ParseCIDR(cidr)
+	_, ipv4Net, err := net.ParseCIDR(pattern)
 	if err != nil {
 		log.Fatal(err)
 	}
