@@ -13,3 +13,4 @@
 /cidrgrep
 
 dist/
+*.swp
